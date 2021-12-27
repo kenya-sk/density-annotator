@@ -1,8 +1,8 @@
 [tool.poetry]
 name = "density-annotator"
 version = "0.1.0"
-description = ""
-authors = ["Your Name <you@example.com>"]
+description = "An annotation tool that creates a density map from an image."
+authors = ["kenya-sk"]
 license = "MIT"
 
 [tool.poetry.dependencies]

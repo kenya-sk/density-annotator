@@ -1,0 +1,8 @@
+data_type: "image"
+sigma_pow: 25
+mouse_event_interval: 1
+save_image_extension: ".png"
+path:
+  input_file_path: ""
+  save_image_dir: "./data/image"
+  save_annotated_dir: "./data/annotated"

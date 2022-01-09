@@ -1,8 +1,8 @@
-data_type: "image"
 sigma_pow: 25
 mouse_event_interval: 1
-save_image_extension: ".png"
+
 path:
-  input_file_path: ""
-  save_image_dir: "./data/image"
-  save_annotated_dir: "./data/annotated"
+  input_file_path: "./data/demo/inputs/demo.png"
+  save_raw_image_dir: "./data/demo/raw_image"
+  save_annotated_dir: "./data/demo/annotated"
+  save_image_extension: ".png"

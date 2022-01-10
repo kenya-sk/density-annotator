@@ -189,20 +189,17 @@ class DensityAnnotator:
         cv2.destroyAllWindows()
         self.video.release()
 
-    def mouse_event(self, event, x: int, y: int, flags, param) -> None:
+    def mouse_event(self, event: int, x: int, y: int, flags: int, param: dict) -> None:
         """
         Select annotated point by left click of mouse
 
-        :param event: mouse event
+        :param event: the type of mouse event
         :param x: x coordinate of the clicked position
         :param y: y coordinate of the clicked position
-        :param flags:
-        :param param:
+        :param flags: the type of button or key that was pressed during the mouse event
+        :param param: the value of param set in the third argument of setMouseCallback
         :return: None
         """
-        print(f"event: {type(event)}")
-        print(f"flags: {type(flags)}")
-        print(f"param: {type(param)}")
         # other than left click
         if event != cv2.EVENT_LBUTTONDOWN:
             return

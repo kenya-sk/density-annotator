@@ -35,9 +35,10 @@ def get_input_data_type(path: str) -> str:
 
 def load_image(path: str) -> np.array:
     """
+    Loads image data from the input path and returns image in numpy array format.
 
-    :param path:
-    :return:
+    :param path: input image file path
+    :return: loaded image
     """
     image = cv2.imread(path)
     if image is None:
@@ -51,6 +52,12 @@ def load_image(path: str) -> np.array:
 
 
 def load_video(path: str) -> cv2.VideoCapture:
+    """
+    Loads video data from the input path and returns video in cv2.VideoCapture format.
+
+    :param path: input video file path
+    :return: loaded video
+    """
     video = cv2.VideoCapture(path)
     if not (video.isOpened()):
         logger.error(
@@ -63,15 +70,36 @@ def load_video(path: str) -> cv2.VideoCapture:
 
 
 def save_image(path: str, image: np.array) -> None:
+    """
+    Save the image data in numpy format in the target path.
+
+    :param path: save path of image
+    :param image: target image
+    :return: None
+    """
     cv2.imwrite(path, image)
     logger.info(f"Saved Image: {path}")
 
 
 def save_coordinate(path: str, coordinate: np.array) -> None:
+    """
+    Save the coordinate data in numpy format in the target path.
+
+    :param path: save path of coordinate
+    :param coordinate: coordinate of annotated points
+    :return: None
+    """
     np.savetxt(path, coordinate, delimiter=",", fmt="%d")
     logger.info(f"Saved Coordinate: {path}")
 
 
 def save_density_map(path: str, density_map: np.array) -> None:
+    """
+    Save the density map data in numpy format in the target path.
+
+    :param path: save path of density map
+    :param density_map: annotated density map
+    :return: None
+    """
     np.save(path, density_map)
     logger.info(f"Save Density Map: {path}")

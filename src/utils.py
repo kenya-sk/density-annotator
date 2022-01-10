@@ -83,7 +83,7 @@ def save_image(path: str, image: np.array) -> None:
 
 def save_coordinate(path: str, coordinate: np.array) -> None:
     """
-    Save the coordinate data in numpy format in the target path.
+    Save the coordinate data (x, y) in numpy format in the target path.
 
     :param path: save path of coordinate
     :param coordinate: coordinate of annotated points

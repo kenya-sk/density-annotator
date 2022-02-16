@@ -5,6 +5,8 @@ import sys
 import cv2
 import numpy as np
 
+from typing import List
+
 # logging setting
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
@@ -103,3 +105,17 @@ def save_density_map(path: str, density_map: np.array) -> None:
     """
     np.save(path, density_map)
     logger.info(f"Save Density Map: {path}")
+
+
+def get_full_path_list(current_working_dirc: str, relative_path_list: List):
+    """
+    Join the current working directory name and relative path to get a list of full paths.
+
+    :param current_working_dirc: current working directory name
+    :param relative_path_list: list of relative paths to be converted
+    :return: List of converted full path
+    """
+    full_path_list = [
+        os.path.join(current_working_dirc, path) for path in relative_path_list
+    ]
+    return full_path_list

@@ -11,8 +11,6 @@ from tqdm import tqdm
 
 from utils import get_full_path_list, load_video, save_image
 
-# set random seed
-random.seed(39)
 
 # logging setting
 logging.basicConfig(

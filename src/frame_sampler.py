@@ -67,7 +67,7 @@ def frame_sampler(input_video_list: List, save_frame_dirc: str, sample_rate: int
                 save_image(save_file_name, frame)
 
 
-@hydra.main(config_path="../conf", config_name="frame_sampler")
+@hydra.main(config_path="../conf", config_name="frame_sampling")
 def run_sampler(cfg: DictConfig) -> None:
     """
     Run frame sampler according to the settings defined in the config file.

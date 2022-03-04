@@ -1,17 +1,38 @@
 import logging
 import os
 import sys
+from glob import glob
+from typing import List
 
 import cv2
 import numpy as np
-
-from typing import List
 
 # logging setting
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
 )
 logger = logging.getLogger(__name__)
+
+
+def get_path_list(path: str, working_directory: str = "") -> List:
+    """
+    Takes a file or directory path and creates a list of full paths.
+
+    :param path: input path that file or directory
+    :param working_directory: current working directory.
+        if input path provided full path, set an empty string.
+    :return: full path list
+    """
+    full_path = os.path.join(working_directory, path)
+    if os.path.isfile(full_path):
+        path_list = [full_path]
+    elif os.path.isdir(full_path):
+        path_list = [current_path for current_path in glob(f"{full_path}/*")]
+    else:
+        logger.error(f"Error: Invalid Path Name: {path}")
+        sys.exit(1)
+
+    return path_list
 
 
 def get_input_data_type(path: str) -> str:
@@ -44,9 +65,7 @@ def load_image(path: str) -> np.array:
     """
     image = cv2.imread(path)
     if image is None:
-        logger.error(
-            f"Error: Can not read image file. Please check input file path. {path}"
-        )
+        logger.error(f"Error: Can not read image file. Please check input file path. {path}")
         sys.exit(1)
     logger.info(f"Loaded Image: {path}")
 
@@ -62,9 +81,7 @@ def load_video(path: str) -> cv2.VideoCapture:
     """
     video = cv2.VideoCapture(path)
     if not (video.isOpened()):
-        logger.error(
-            f"Error: Can not read video file. Please check input file path. {path}"
-        )
+        logger.error(f"Error: Can not read video file. Please check input file path. {path}")
         sys.exit(1)
     logger.info(f"Loaded Video: {path}")
 
@@ -115,7 +132,5 @@ def get_full_path_list(current_working_dirc: str, relative_path_list: List):
     :param relative_path_list: list of relative paths to be converted
     :return: List of converted full path
     """
-    full_path_list = [
-        os.path.join(current_working_dirc, path) for path in relative_path_list
-    ]
+    full_path_list = [os.path.join(current_working_dirc, path) for path in relative_path_list]
     return full_path_list

@@ -7,6 +7,7 @@ import numpy as np
 from omegaconf import DictConfig
 
 from utils import (
+    get_path_list,
     get_input_data_type,
     load_image,
     load_video,
@@ -61,7 +62,8 @@ class DensityAnnotator:
         self.frame_num = 0
 
         # set file path
-        self.input_file_path = os.path.join(original_cwd, cfg.path.input_file_path)
+        self.input_file_path = None
+        self.input_file_path_list = get_path_list(cfg.path.input_file_path, original_cwd)
         self.save_raw_image_dir = os.path.join(
             original_cwd, cfg.path.save_raw_image_dir
         )
@@ -86,15 +88,20 @@ class DensityAnnotator:
 
         :return: None
         """
-        data_type = get_input_data_type(self.input_file_path)
-        logger.info(f"Annotation Data Type: {data_type}")
-        if data_type == "image":
-            self.image_annotation()
-        elif data_type == "movie":
-            self.movie_annotation()
-        else:
-            logger.error("Data type is invalid. Please check input file.")
-            sys.exit(1)
+        for file_path in self.input_file_path_list:
+            self.input_file_path = file_path
+            data_type = get_input_data_type(self.input_file_path)
+            logger.info(f"Annotation Data Type: {data_type}")
+            if data_type == "image":
+                self.image_annotation()
+            elif data_type == "movie":
+                self.movie_annotation()
+            else:
+                logger.error("Data type is invalid. Please check input file.")
+                sys.exit(1)
+
+        # end processing
+        cv2.destroyAllWindows()
 
     def annotator_initialization(self) -> None:
         """
@@ -119,6 +126,8 @@ class DensityAnnotator:
         # load input image
         self.frame = load_image(self.input_file_path)
         self.frame_list.append(self.frame.copy())
+        # frame number get from input file name
+        self.frame_num = os.path.splitext(os.path.basename(self.input_file_path))[0]
         # initialize by frame information
         self.annotator_initialization()
         while True:
@@ -136,8 +145,6 @@ class DensityAnnotator:
                 self.save_annotated_data()
                 wait_interval = self.mouse_event_interval
                 break
-        # end processing
-        cv2.destroyAllWindows()
 
     def movie_annotation(self) -> None:
         """
@@ -186,7 +193,6 @@ class DensityAnnotator:
                 self.save_annotated_data()
                 wait_interval = self.mouse_event_interval
         # end processing
-        cv2.destroyAllWindows()
         self.video.release()
 
     def mouse_event(self, event: int, x: int, y: int, flags: int, param: dict) -> None:

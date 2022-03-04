@@ -29,7 +29,7 @@ def get_path_list(path: str, working_directory: str = "") -> List:
     elif os.path.isdir(full_path):
         path_list = [current_path for current_path in glob(f"{full_path}/*")]
     else:
-        logger.error(f"Error: Invalid Path Name: {path}")
+        logger.error(f"Error: Invalid Path Name: {full_path}")
         sys.exit(1)
 
     return path_list

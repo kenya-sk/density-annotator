@@ -5,6 +5,7 @@ import logging
 import cv2
 import numpy as np
 from omegaconf import DictConfig
+from tqdm import tqdm
 
 from utils import (
     get_path_list,
@@ -88,7 +89,11 @@ class DensityAnnotator:
 
         :return: None
         """
-        for file_path in self.input_file_path_list:
+        for file_path in tqdm(self.input_file_path_list, desc="Annotation File Number"):
+            # initialization
+            self.frame_list = []
+            self.features = None
+            # load file
             self.input_file_path = file_path
             data_type = get_input_data_type(self.input_file_path)
             logger.info(f"Annotation Data Type: {data_type}")

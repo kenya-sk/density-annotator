@@ -3,6 +3,7 @@ FROM python:3.8-slim as builder
 WORKDIR /workspace
 RUN pip install poetry
 COPY pyproject.toml ./
+RUN poetry install
 RUN poetry export -f requirements.txt > requirements.txt
 
 FROM python:3.8-slim

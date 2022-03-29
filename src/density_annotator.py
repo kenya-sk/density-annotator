@@ -64,7 +64,9 @@ class DensityAnnotator:
 
         # set file path
         self.input_file_path = None
-        self.input_file_path_list = get_path_list(cfg.path.input_file_path, original_cwd)
+        self.input_file_path_list = get_path_list(
+            cfg.path.input_file_path, original_cwd
+        )
         self.save_raw_image_dir = os.path.join(
             original_cwd, cfg.path.save_raw_image_dir
         )
@@ -99,8 +101,8 @@ class DensityAnnotator:
             logger.info(f"Annotation Data Type: {data_type}")
             if data_type == "image":
                 self.image_annotation()
-            elif data_type == "movie":
-                self.movie_annotation()
+            elif data_type == "video":
+                self.video_annotation()
             else:
                 logger.error("Data type is invalid. Please check input file.")
                 sys.exit(1)
@@ -151,7 +153,7 @@ class DensityAnnotator:
                 wait_interval = self.mouse_event_interval
                 break
 
-    def movie_annotation(self) -> None:
+    def video_annotation(self) -> None:
         """
         A function to perform annotation on movie.
         This function allow to annotate multiple images cut out

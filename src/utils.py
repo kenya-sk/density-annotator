@@ -35,6 +35,20 @@ def get_path_list(path: str, working_directory: str = "") -> List:
     return path_list
 
 
+def get_full_path_list(current_working_dirc: str, relative_path_list: List):
+    """
+    Join the current working directory name and relative path to get a list of full paths.
+
+    :param current_working_dirc: current working directory name
+    :param relative_path_list: list of relative paths to be converted
+    :return: List of converted full path
+    """
+    full_path_list = [
+        os.path.join(current_working_dirc, path) for path in relative_path_list
+    ]
+    return full_path_list
+
+
 def get_input_data_type(path: str) -> str:
     """
     Get the extension from the input data path and get the data processing format.
@@ -45,11 +59,11 @@ def get_input_data_type(path: str) -> str:
     """
     data_type = "invalid"
     if os.path.isfile(path):
-        root, ext = os.path.splitext(path)
+        _, ext = os.path.splitext(path)
         if ext in [".png", ".jpg", ".jpeg"]:
             data_type = "image"
         elif ext in [".mp4", ".mov"]:
-            data_type = "movie"
+            data_type = "video"
 
     logger.info(f"Input Data Type: {data_type}")
 
@@ -65,7 +79,9 @@ def load_image(path: str) -> np.array:
     """
     image = cv2.imread(path)
     if image is None:
-        logger.error(f"Error: Can not read image file. Please check input file path. {path}")
+        logger.error(
+            f"Error: Can not read image file. Please check input file path. {path}"
+        )
         sys.exit(1)
     logger.info(f"Loaded Image: {path}")
 
@@ -81,7 +97,9 @@ def load_video(path: str) -> cv2.VideoCapture:
     """
     video = cv2.VideoCapture(path)
     if not (video.isOpened()):
-        logger.error(f"Error: Can not read video file. Please check input file path. {path}")
+        logger.error(
+            f"Error: Can not read video file. Please check input file path. {path}"
+        )
         sys.exit(1)
     logger.info(f"Loaded Video: {path}")
 
@@ -122,15 +140,3 @@ def save_density_map(path: str, density_map: np.array) -> None:
     """
     np.save(path, density_map)
     logger.info(f"Save Density Map: {path}")
-
-
-def get_full_path_list(current_working_dirc: str, relative_path_list: List):
-    """
-    Join the current working directory name and relative path to get a list of full paths.
-
-    :param current_working_dirc: current working directory name
-    :param relative_path_list: list of relative paths to be converted
-    :return: List of converted full path
-    """
-    full_path_list = [os.path.join(current_working_dirc, path) for path in relative_path_list]
-    return full_path_list

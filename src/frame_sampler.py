@@ -11,7 +11,6 @@ from tqdm import tqdm
 
 from utils import get_full_path_list, load_video, save_image
 
-
 # logging setting
 logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s %(name)-12s %(levelname)-8s %(message)s"
@@ -60,11 +59,11 @@ def frame_sampler(input_video_list: List, save_frame_dirc: str, sample_rate: int
 
             # load current frame
             ret, frame = video.read()
-            if not ret:
-                print(f"Error: cannot load {frame_number} frame")
-            else:
+            if ret:
                 save_file_name = f"{save_frame_dirc}/{file_name}_{frame_number}.png"
                 save_image(save_file_name, frame)
+            else:
+                print(f"Error: cannot load {frame_number} frame")
 
 
 @hydra.main(config_path="../conf", config_name="frame_sampling")
